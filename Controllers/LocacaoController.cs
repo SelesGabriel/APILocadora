@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Locadora.Data;
 using Locadora.Models;
@@ -79,6 +80,28 @@ namespace Locadora.Controllers
                 return mensagem = "Locação alterada com sucesso com sucesso.";
             }
             return mensagem = "Não foi possível alterar.";
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<string> Delete([FromServices] DataContext context, int Id)
+        {
+            Locacao locacao = await context.Locacoes.FirstOrDefaultAsync(x => x.IdLocacao == Id);
+            if (locacao == null)
+                return mensagem = "Locação inexistente.";
+            if (locacao.Devolveu)
+            {
+                var sb = new StringBuilder();
+                var locacaoHist = locacao;
+                context.Remove(locacao);
+                await context.SaveChangesAsync();
+                sb.Append("Locação finalizada.");
+                sb.Append($" O cliente {locacaoHist.Cliente.Nome} {locacaoHist.Cliente.Sobrenome}");
+                sb.Append($" devolveu o filme {locacaoHist.Filme.Nome}.");
+                return mensagem = sb.ToString();
+            }
+            return mensagem = $"Esta locação ainda está ativa. Cliente: {locacao.Cliente.Nome}, Filme: {locacao.Filme.Nome}";
+
         }
     }
 }
