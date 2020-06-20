@@ -66,7 +66,7 @@ namespace Locadora.Controllers
                     return BadRequest(ModelState);
                 }
             }
-            return mensagem = $"Cliente '{cliente.Nome}' já existe.";
+            return mensagem = $"Já existe um cliente com esse CPF. Nome do cliente: {cliente.Nome}.";
             
         }
 
