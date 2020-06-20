@@ -54,7 +54,7 @@ namespace Locadora.Controllers
                 context.Add(locacao);
                 await context.SaveChangesAsync();
                 return mensagem =
-                    $"Locação do filme '{locacao.Filme.Nome}' concluída com sucesso no nome de '{locacao.Cliente.Nome}'";
+                    $"Locação do filme '{locacao.Filme.Nome}' concluída com sucesso no nome de '{locacao.Cliente.Nome} {locacao.Cliente.Sobrenome}'";
             }
             else
                 return BadRequest(ModelState);
